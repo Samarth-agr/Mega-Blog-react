@@ -31,7 +31,7 @@ function Login() {
       <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
       <h2 className='text-center text-2xl font-bold leading-tight'>Sign in to your account</h2>
       <p>
-        Aldready Have an account?
+        Don't Have an account?
       <Link to="/singup" className='font-medium text-primary transition-all duration-200 hover:underline'>
       Sign up
       </Link>
@@ -47,9 +47,6 @@ function Login() {
             })}/>
             <Input label="password" placeholder="password" type="password" {...register("password",{
                 required:true,
-                validate: {
-                    matchPattern: (value)=> /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(value) || "Password is weak"
-                }
             })}/>
             <Button type="submit" className="w-full">Sign in</Button>
         </div>
