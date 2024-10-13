@@ -9,7 +9,7 @@ function Header() {
 
     const navItems = [ //Simply used to navigate all pages. if in future we need to add more page we dont need to make so much of changes. we can simply add new object
         {
-            name : Home,
+            name : "Home",
             slug : "/",
             active: true
         },

@@ -1,24 +1,23 @@
-import React, { useState } from 'react'
-import authservice from '../appwrite/auth'
-import {Signup} from '../appwrite/auth'
-import {Button, Input} from './index'
-import { login } from '../store/AuthSlice'
-import {useFrom} from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import React, {useState} from 'react'
+import authService from '../appwrite/auth'
+import {Link ,useNavigate} from 'react-router-dom'
+import {login} from '../store/AuthSlice'
+import {Button, Input} from './index.js'
+import {useDispatch} from 'react-redux'
+import {useForm} from 'react-hook-form'
 
 function Signup() {
     const navigate = useNavigate()
+    const [error, setError] = useState("")
     const dispatch = useDispatch()
-    const [error,setError] = useState()
-    const {register , handelSubmit} = useFrom()
+    const {register, handleSubmit} = useForm()
 
-    const signup = async(data)=>{
+    const create = async(data) => {
         setError("")
         try {
-            const userData = await authservice.CreateAccount(data);
-            if(userData){
-                const userData = await authservice.getCurrentUser()
+            const userData = await authService.CreateAccount(data)
+            if (userData) {
+                const userData = await authService.getCurrentUser()
                 if(userData) dispatch(login(userData));
                 navigate("/")
             }
@@ -28,28 +27,58 @@ function Signup() {
     }
 
   return (
-    <div className='w-full flex items-center justify-center'>
-        <div className="mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10">
-        <h2 className='text-center text-2xl font-bold leading-tight'>Sign up</h2>
-        <p>Aldready have an account?
-        <Link to='/login'></Link>
-        </p>
-        {error && <p className='text-red-500'>{error}</p>}
-        </div>
-        <form onClick={handelSubmit(signup)}>
-            <div className="space-y-5">
-                <Input label="name" placeholder="Enter full name" {...register("name" , {
-                    required : true
-                })}/>
-                <Input label="email" type="email" placeholder="Enter email address" {...register("email",{
-                    required : true
-                })}/>
-                <Input label="password" type="password" placeholder="Enter password" {...register("email",{
-                    required : true
-                })}/>
-                <Button type="submit">SignUp</Button>
+    <div className="flex items-center justify-center">
+            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
+            <div className="mb-2 flex justify-center">
+                    
+                </div>
+                <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
+                <p className="mt-2 text-center text-base text-black/60">
+                    Already have an account?&nbsp;
+                    <Link
+                        to="/login"
+                        className="font-medium text-primary transition-all duration-200 hover:underline"
+                    >
+                        Sign In
+                    </Link>
+                </p>
+                {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
+
+                <form onSubmit={handleSubmit(create)}>
+                    <div className='space-y-5'>
+                        <Input
+                        label="Full Name: "
+                        placeholder="Enter your full name"
+                        {...register("name", {
+                            required: true,
+                        })}
+                        />
+                        <Input
+                        label="Email: "
+                        placeholder="Enter your email"
+                        type="email"
+                        {...register("email", {
+                            required: true,
+                            validate: {
+                                matchPatern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+                                "Email address must be a valid address",
+                            }
+                        })}
+                        />
+                        <Input
+                        label="Password: "
+                        type="password"
+                        placeholder="Enter your password"
+                        {...register("password", {
+                            required: true,})}
+                        />
+                        <Button type="submit" className="w-full">
+                            Create Account
+                        </Button>
+                    </div>
+                </form>
             </div>
-        </form>
+
     </div>
   )
 }

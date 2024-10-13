@@ -4,9 +4,11 @@ import App from './App.jsx'
 import './index.css'
 import { Provider } from 'react-redux'
 import Store from './store/store.js'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home.jsx'
-import { AuthLayout, Login, Post, Signup } from './components/index.js'
+import { AuthLayout, Login} from './components/index.js'
+import Signup from './pages/Signup.jsx'
+import Post from './pages/Post.jsx'
 import AllPost from './pages/AllPost.jsx'
 import AddPost from './pages/AddPost.jsx'
 import EditPost from './pages/EditPost.jsx'
@@ -70,7 +72,7 @@ const router = createBrowserRouter([{
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={Store}>
-    <App />
+      <RouterProvider router={router}/>
     </Provider>
   </StrictMode>,
 )
